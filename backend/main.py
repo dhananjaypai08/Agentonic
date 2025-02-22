@@ -6,7 +6,7 @@ from createAgent import create_agent, get_sonic_actions, handle_prompt, defi_ana
 import json
 import requests
 import os
-from bridgeAgent import bridge_sonic_to_sepolia
+from bridgeAgent import bridge_sonic_to_sepolia, mint_sbt
 load_dotenv() 
 from createAgent import DefiAnalysisSystemPrompt
 app = FastAPI()
@@ -88,6 +88,20 @@ async def chat(request: Request):
         response = requests.post(f"{base_url}/agent/action", json={"connection": "galadriel", "action": "generate-text", "params": [prompt, "You are a defi expert with all the knowledge of defi and crypto including protocols, latest news, slippage charges, social sentiments on twitter. You give statistical insights with values and risk analysis on each of the prompts. Give stepy by step response with bullet points and numbers which can be easily parsed by the frontend."]})
         print(response.json())
         return response.json()
+    
+@app.post("/mintSbt")
+async def handle_sbt(request: Request):
+    body = await request.json()
+    uri = body["uri"]
+    walletAddress = body["walletAddress"]
+    response = mint_sbt(uri, walletAddress)
+    return response
+
+@app.get("/readAgent")
+async def read_agent(agent_name: str):
+    with open(f"../ZerePy/agents/{agent_name}.json", "r") as f:
+        agent_config = json.load(f)
+    return agent_config
 
 @app.post("/performAction")
 async def perform_action(request: Request):
