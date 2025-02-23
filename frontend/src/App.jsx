@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar';
 import Agents from './components/Agents';
 import Settings from './components/Settings';
 import Query from './components/Query';
+import SocialLaunchpad from './components/SocialLaunchpad';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/agents" element={<Agents />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/query" element={<Query />} />
+          <Route path="/launchpad" element={<SocialLaunchpad />} />
         </Routes>
       </div>
     </Router>

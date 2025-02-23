@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ChatBubbleLeftRightIcon, CodeBracketSquareIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
+import { ChatBubbleLeftRightIcon, CodeBracketSquareIcon, Cog6ToothIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
 
 const Sidebar = () => {
   const menuItems = [
@@ -30,6 +30,15 @@ const Sidebar = () => {
           <ChatBubbleLeftRightIcon className="w-6 h-6 mr-2" />
           Query Agent
         </Link>
+
+        <Link 
+          to="/launchpad" 
+          className="text-gray-300 hover:text-white hover:bg-gray-800 p-3 rounded-lg transition-all duration-200"
+        >
+          <RocketLaunchIcon className="w-6 h-6 mr-2" />
+          Launchpad
+        </Link>
+        
         <Link 
           to="/settings" 
           className="text-gray-300 hover:text-white hover:bg-gray-800 p-3 rounded-lg transition-all duration-200"
@@ -37,6 +46,7 @@ const Sidebar = () => {
           <Cog6ToothIcon className="w-6 h-6 mr-2" />
           Settings
         </Link>
+        
       </div>
     </div>
   );

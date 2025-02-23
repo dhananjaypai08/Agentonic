@@ -370,3 +370,85 @@ async def defi_analysis(prompt: str):
         return res.message.content[0].text
     except Exception as e:
         return f"Error generating response: {str(e)}"
+    
+def intent_detection_and_slot_filling(prompt: str):
+    try:
+        res = co.chat(
+            model="command-r-plus-08-2024",
+            messages=[
+                {
+                    "role": "system",
+                    "content": """Context: You are an expert in detecting the intent of the user and slot filling the JSON structure accordingly.
+                    Instructions: 
+                    - Analyze the user's query and find the slot filling the JSON structure accordingly
+                    - Slot fill the JSON structure accordingly
+                    - If you can't detect token name, that is the `name` field then create a random name for the token
+                    - If you can't detect token symbol, that is the `symbol` field then create a random symbol for the token. For example for token Name : "Agentonic" the symbol can be "AGT"
+                    - If you can't detect token initial supply, that is the `initialSupply` field then the default value for initial supply is 1000000
+                    - If you can't detect token max supply, that is the `maxSupply` field then the default value for max supply is 10000000
+                    Required JSON Structure:
+                    {
+                        "name": "string", # name of the token
+                        "symbol": "string", # symbol of the token
+                        "initialSupply": "integer", # initial supply of the token
+                        "maxSupply": "integer", # max supply of the token,
+                        "owner": "string" # owner of the token
+                    }
+                    """         
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            response_format={"type": "json_object",
+                             "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {"type": "string"},
+                                    "symbol": {"type": "string"},
+                                    "initialSupply": {"type": "integer"},
+                                    "maxSupply": {"type": "integer"},
+                                    "owner": {"type": "string"} # owner of the token   
+                                },
+                                "required": ["name", "symbol", "initialSupply", "maxSupply", "owner"]
+                             }
+                        }
+        )
+        return res.message.content[0].text
+    except Exception as e:
+        return f"Error generating response: {str(e)}"
+    
+def sentiment_analysis(prompt: str, tweets: list):
+    try:
+        res = co.chat(
+            model="command-r-plus-08-2024",
+            messages=[
+                {
+                    "role": "system",
+                    "content": f"""Context: You are an expert in sentiment analysis.
+                    Instructions: 
+                    - Analyze the user's query and find the sentiment of the user
+                    - Analyze the tweets and find the sentiment of the user
+                    - Return false if the sentiment is very negative and for all other cases return true
+                    The tweets are : {list(tweets)}
+                    """
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            response_format={"type": "json_object",
+                             "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "sentiment": {"type": "boolean"}
+                                },
+                                "required": ["sentiment"]
+                             }
+                    }
+        )
+        return res.message.content[0].text
+    except Exception as e:
+        return f"Error generating response: {str(e)}"
