@@ -185,7 +185,7 @@ const SocialLaunchpad = () => {
       // Step 4: Post Tweet
       setCurrentStep('tweet');
       const tweetContent = `I deployed my own token named $${tokenInfoData.symbol} and here is the contract address: ${deployData} on the sonic testnet`;
-      const data = await fetch('http://localhost:5001/postTweet', {
+      const tweetResponse = await fetch('http://localhost:5001/postTweet', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: tweetContent })

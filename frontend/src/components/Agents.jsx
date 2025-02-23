@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { create } from 'ipfs-http-client';
-import { Dialog } from '@headlessui/react';
+import { Dialog, DialogTitle } from '@headlessui/react';
 import { ethers } from 'ethers';
 import { Link } from 'react-router-dom';
 
@@ -28,6 +28,8 @@ const Agents = () => {
   const [tokenizing, setTokenizing] = useState(false);
   const [tokenizeStep, setTokenizeStep] = useState(0);
   const [txHash, setTxHash] = useState(null);
+  const [ipfsHash, setIpfsHash] = useState(null);
+  const [successfulMints, setSuccessfulMints] = useState([]);
 
   const TOKENIZE_STEPS = [
     "Reading agent configuration...",
@@ -109,26 +111,37 @@ const Agents = () => {
       setTokenizeStep(1);
       const result = await ipfs.add(JSON.stringify(agentConfig));
       const ipfsUri = `https://ipfs.io/ipfs/${result.path}`;
-
+      setIpfsHash(ipfsUri);
+      console.log(ipfsUri);
       // Step 3: Mint SBT
       setTokenizeStep(2);
       const mintResponse = await axios.post('http://localhost:5001/mintSbt', {
         uri: ipfsUri,
         walletAddress: walletAddress
       });
-
+      
       // Step 4: Finalize
       setTokenizeStep(3);
-      const tx_hash = `https://testnet.sonicscan.org/tx/0x${mintResponse.data}`;
-      console.log(tx_hash);
-      setTxHash(tx_hash);
+      const explorerUrl = `https://testnet.sonicscan.org/tx/0x${mintResponse.data}`;
       
+      // Add to successful mints instead of showing toast
+      setSuccessfulMints(prev => [...prev, {
+        agentName: selectedAgent,
+        explorer: explorerUrl,
+        ipfs: ipfsUri,
+        timestamp: new Date().toLocaleString()
+      }]);
+
+      setTokenizeOpen(false);
       toast.success('Agent tokenized successfully!');
+
     } catch (error) {
       console.error('Tokenization error:', error);
       toast.error('Failed to tokenize agent');
     } finally {
       setTokenizing(false);
+      setTxHash(null);
+      setIpfsHash(null);
     }
   };
 
@@ -145,6 +158,42 @@ const Agents = () => {
             Create Agent
           </button>
         </div>
+
+        {/* Successful Mints Section */}
+        {successfulMints.length > 0 && (
+          <div className="mb-8 bg-gray-800 rounded-xl p-6 border border-gray-700">
+            <h3 className="text-xl font-semibold text-white mb-4">Tokenized Agents</h3>
+            <div className="space-y-4">
+              {successfulMints.map((mint, index) => (
+                <div key={index} className="bg-gray-700/50 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-2 h-2 bg-green-500 rounded-full" />
+                    <span className="text-white font-medium">{mint.agentName}</span>
+                    <span className="text-gray-400 text-sm ml-auto">{mint.timestamp}</span>
+                  </div>
+                  <div className="flex gap-4">
+                    <a
+                      href={mint.explorer}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 px-4 py-2 bg-gray-700 text-blue-400 rounded-lg hover:bg-gray-600 transition-all duration-200 text-center text-sm"
+                    >
+                      View on Explorer →
+                    </a>
+                    <a
+                      href={mint.ipfs}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 px-4 py-2 bg-gray-700 text-blue-400 rounded-lg hover:bg-gray-600 transition-all duration-200 text-center text-sm"
+                    >
+                      View on IPFS →
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Create Agent Modal */}
         {promptOpen && (
@@ -212,9 +261,9 @@ const Agents = () => {
 
           <div className="fixed inset-0 flex items-center justify-center p-4">
             <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
-              <Dialog.Title className="text-xl font-bold text-white mb-4">
+              <DialogTitle className="text-xl font-bold text-white mb-4">
                 Tokenize Agent: {selectedAgent}
-              </Dialog.Title>
+              </DialogTitle>
 
               {!tokenizing && !txHash && (
                 <form onSubmit={handleTokenizeSubmit}>
@@ -276,14 +325,6 @@ const Agents = () => {
                       Your agent has been successfully tokenized as an SBT.
                     </p>
                   </div>
-                  <a
-                    href={txHash}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full px-4 py-2 text-center bg-gray-700 text-blue-400 rounded-lg hover:bg-gray-600 transition-all duration-200"
-                  >
-                    View on Explorer →
-                  </a>
                 </div>
               )}
             </Dialog.Panel>

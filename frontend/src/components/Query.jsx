@@ -370,7 +370,7 @@ const Query = () => {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about DeFi, bridges, or transfers..."
+              placeholder="Wallet management, DeFi, bridges, or transfers..."
               className="w-full bg-gray-800 text-white rounded-xl px-6 py-4 pr-14 focus:outline-none focus:ring-2 focus:ring-purple-500 text-lg"
               disabled={isLoading}
             />
