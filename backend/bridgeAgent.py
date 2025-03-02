@@ -58,7 +58,7 @@ def bridge_erc20_to_sepolia(amount: int, address: str):
 def bridge_sonic_to_sepolia(amount: int, address: str):
     tx = bridge_erc20_to_sepolia(amount, address)
     print(f"Transaction sent on Sepolia: {tx.hex()}")
-    txh_url = f"https://sepolia.etherscan.io/tx/{tx.hex()}"
+    txh_url = f"https://sepolia.etherscan.io/tx/0x{tx.hex()}"
     data = requests.post(f"{base_url}/agent/action", json={"connection": "sonic", "action": "transfer", "params": [address, str(amount)]})
     data = data.json()
     print(data)

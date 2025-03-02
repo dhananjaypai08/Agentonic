@@ -72,7 +72,7 @@ async def chat(request: Request):
     response = await get_sonic_actions(prompt)
     data = json.loads(response)
     print(data)
-    if data['action'] != 'other':
+    if data['action'] != 'question':
         if data['action'] == 'analyze':
             # response = requests.post(f"{base_url}/agent/action", json={"connection": "galadriel", "action": "generate-text", "params": [prompt, DefiAnalysisSystemPrompt]})
             # return response.json()

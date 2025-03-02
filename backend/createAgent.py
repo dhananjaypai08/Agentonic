@@ -264,7 +264,7 @@ async def handle_prompt(prompt: str):
         return await create_agent(prompt)
     
 async def get_sonic_actions(prompt: str):
-    actions = ['get-balance', 'transfer', 'bridge', 'analyze', 'other']
+    actions = ['get-balance', 'transfer', 'bridge', 'analyze', 'question']
     try:
         res = co.chat(
             model="command-r-plus-08-2024",
@@ -274,6 +274,8 @@ async def get_sonic_actions(prompt: str):
                     "content": f"""Context: You are an expert in finding the right action to perform based on the user's query along with all the parameters and values for the action. 
                     Instructions: 
                     - Analyze the user's query and find the right action to perform from this list of actions : {list(actions)}
+                    - It may happen that "bridge", "swap", "transfer" could be in the prompt but the user is asking it as a question so you should not consider it as an action
+                    - Find the right action to perform based on the user's query
                     - Provide a comprehensive, step-by-step response
                     - Include protocol recommendations, potential benefits, and risks
                     - Don't give 'None' or 'N/A' as a response for anything, if you don't have the data, just search the internet and give the latest data for it and don't ever give `None` as a response for any field.
@@ -282,7 +284,7 @@ async def get_sonic_actions(prompt: str):
                     - For action : transfer, the parameters should be like this example : ["0x1234567890123456789012345678901234567890", "1"]
                     - For action : bridge, the parameters should be like this example : ["sonic", "ethereum", "1", "0x1234567890123456789012345678901234567890"]
                     - For action : analyze-defi, the parameters should be like this example : []
-                    - For action : other, the parameters should be like this example : [] # This means that the action is not listed in the actions list and is just a normal query
+                    - For action : question, the parameters should be like this example : [] # This means that the action is not listed in the actions list and is just a normal question
 
                     AVAILABLE ACTIONS:
                   
