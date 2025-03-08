@@ -283,20 +283,8 @@ async def get_sonic_actions(prompt: str):
                     - For action : get-balance, the parameters should be like this example : ["0x1234567890123456789012345678901234567890"]
                     - For action : transfer, the parameters should be like this example : ["0x1234567890123456789012345678901234567890", "1"]
                     - For action : bridge, the parameters should be like this example : ["sonic", "ethereum", "1", "0x1234567890123456789012345678901234567890"]
-                    - For action : analyze-defi, the parameters should be like this example : []
+                    - For action : analyze, the parameters should be like this example : []
                     - For action : question, the parameters should be like this example : [] # This means that the action is not listed in the actions list and is just a normal question
-
-                    AVAILABLE ACTIONS:
-                  
-                    - get-balance: Get $S or token balance
-                      Parameters:
-                        - address (optional): Address to check balance for
-                        - token_address (optional): Optional token address
-                    - transfer: Send $S or tokens
-                      Parameters:
-                        - to_address (required): Recipient address
-                        - amount (required): Amount to transfer
-                        - token_address (optional): Optional token address
                     """
                 },
                 {
@@ -323,6 +311,7 @@ DefiAnalysisSystemPrompt = """Context: You are an expert DeFi Optimizer.
                     Instructions: 
                     - You are an expert DeFi Optimizer. You have all the Defi related knowledge and you are able to analyze the user's query about DeFi protocols and provide a comprehensive, step-by-step response. You are more statistical and you are able to give the best possible analysis for the user's query 
                     - You are heavy on statistics and on risk analysis for each protocol that you come up with
+                    - You need to give as many statistical numbers as possible in your response like 500 Million in TVL, 20% net gains on the given token, 0.2 percent slippage, 1 million daily users use this
                     - Generate a JSON response for a user query about DeFi protocols and strictly adhere to the below given points without None values
                     - Analyze the user's query about DeFi protocols
                     - Provide a comprehensive, step-by-step response
@@ -336,7 +325,7 @@ DefiAnalysisSystemPrompt = """Context: You are an expert DeFi Optimizer.
                     Required JSON Structure:
                     {
                         "protocol_name": "string",
-                        "protocol_description": "string",
+                        "protocol_description": "string", # give as many statistical numbers as possible in your response like 500 Million in TVL, 20% net gains on the given token, 0.2 percent slippage, 1 million daily users use this
                         "protocol_steps": [
                             {
                                 "step_number": 1,
@@ -346,7 +335,7 @@ DefiAnalysisSystemPrompt = """Context: You are an expert DeFi Optimizer.
                             }
                         ],
                         "protocol_link": "string",
-                        "estimated_slippage": "string",
+                        "estimated_slippage": "string", # give as many statistical numbers as possible in your response like 500 Million in TVL, 20% net gains on the given token, 0.2 percent slippage, 1 million daily users use this 
                         "slippage insights": "string",
                         "overall_benefit": "string",
                         "risks": ["string"],

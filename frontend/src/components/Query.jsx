@@ -214,9 +214,9 @@ const MessageBubble = ({ message }) => {
           <div className="p-4 bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700/70 flex flex-col space-y-2">
             <div className="flex items-baseline space-x-3">
               <span className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                {formatBalance(message.balance)} ETH
+                {formatBalance(message.balance)} S (Sonic Blaze)
               </span>
-              <span className="text-gray-400">≈ ${(message.balance * 3500).toFixed(2)} USD</span>
+              <span className="text-gray-400">≈ ${(message.balance * 0.03021205).toFixed(4)} USD</span>
             </div>
             <div className="h-2 bg-gray-700/70 rounded-full overflow-hidden w-full mt-1">
               <div 
@@ -394,7 +394,6 @@ const Query = () => {
       }
 
       const data = await response.json();
-      
       let botMessage = {
         type: 'bot',
         content: '',
@@ -413,9 +412,13 @@ const Query = () => {
           botMessage.balance = balance;
           botMessage.content = randomMessage;
         }
-        // Check if response is a protocol object
+        // Check if the result itself is a protocol object
         else if (data.result && typeof data.result === 'object' && data.result.protocol_name) {
           botMessage.content = data.result;
+        }
+        // Check if data (not result) is a protocol object
+        else if (data.protocol_name) {
+          botMessage.content = data;
         }
         // Check if response is a transaction with URL
         else if (data.tx_url) {

@@ -77,7 +77,10 @@ async def chat(request: Request):
             # response = requests.post(f"{base_url}/agent/action", json={"connection": "galadriel", "action": "generate-text", "params": [prompt, DefiAnalysisSystemPrompt]})
             # return response.json()
             response = await defi_analysis(prompt)
-            return response.json()
+            response = json.loads(response)
+            response["status"] = "success"
+            print(response)
+            return response
         if data['action'] == 'bridge':
             data = bridge_sonic_to_sepolia(data['parameters'][2], data['parameters'][3])
             
