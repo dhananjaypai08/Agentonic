@@ -46,7 +46,7 @@ def bridge_erc20_to_sepolia(amount: int, address: str):
         'nonce': sepolia_web3.eth.get_transaction_count(account.address),
         'to': account.address,  # Self-transfer to simulate bridging
         'value': Web3.to_wei(1, 'ether'),
-        'gas': 21000,
+        'gas': 31000,
         'gasPrice': sepolia_web3.eth.gas_price,
         'chainId': 11155111,  # Sepolia chain ID
     }

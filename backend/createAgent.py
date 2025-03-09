@@ -443,3 +443,27 @@ def sentiment_analysis(prompt: str, tweets: list):
         return res.message.content[0].text
     except Exception as e:
         return f"Error generating response: {str(e)}"
+    
+
+async def normal_query(prompt: str):
+    try:
+        res = co.chat(
+            model="command-r-plus-08-2024",
+            messages=[
+                {
+                    "role": "system",
+                    "content": f"""Context: You are an expert in Defi protocols and DWF Labs Liquidity Market.
+                    Instructions: 
+                    - Analyze the user's query and give the latest, accurate and best response
+                    - Always give short to medium, subtle and to the point answers 
+                    """
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        )
+        return res.message.content[0].text
+    except Exception as e:
+        return f"Error generating response: {str(e)}"

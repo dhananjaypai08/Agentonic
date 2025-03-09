@@ -25,13 +25,13 @@ const Sidebar = () => {
       name: 'Query Agent',
       icon: ChatBubbleLeftRightIcon,
       path: '/query',
-      description: 'Chat with your agents'
+      description: 'Chat with your loaded agent'
     },
     {
       name: 'Launchpad',
       icon: RocketLaunchIcon,
       path: '/launchpad',
-      description: 'Deploy new projects'
+      description: 'Smart Launch new token'
     },
     {
       name: 'Settings',

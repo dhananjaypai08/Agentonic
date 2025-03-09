@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv, set_key
-from createAgent import create_agent, get_sonic_actions, sentiment_analysis, defi_analysis, intent_detection_and_slot_filling
+from createAgent import create_agent, get_sonic_actions, sentiment_analysis, defi_analysis, intent_detection_and_slot_filling, normal_query
 import json
 import requests
 import os
@@ -89,9 +89,11 @@ async def chat(request: Request):
         print(response.json())
         return response.json()
     else:
-        response = requests.post(f"{base_url}/agent/action", json={"connection": "galadriel", "action": "generate-text", "params": [prompt, "You are a defi expert with all the knowledge of defi and crypto including protocols, latest news, slippage charges, social sentiments on twitter. You give statistical insights with values and risk analysis on each of the prompts. Give stepy by step response with bullet points and numbers which can be easily parsed by the frontend."]})
-        print(response.json())
-        return response.json()
+        # response = requests.post(f"{base_url}/agent/action", json={"connection": "galadriel", "action": "generate-text", "params": [prompt, "You are a defi expert with all the knowledge of defi and crypto including protocols, latest news, slippage charges, social sentiments on twitter. You give statistical insights with values and risk analysis on each of the prompts. Give stepy by step response with bullet points and numbers which can be easily parsed by the frontend."]})
+        # print(response.json())
+        response = await normal_query(prompt)
+        data = {"status": "success", "result": response}
+        return data
     
 @app.post("/mintSbt")
 async def handle_sbt(request: Request):
