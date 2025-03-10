@@ -149,7 +149,7 @@ poetry run python main.py --server
 
 ## 🤝 Contributing
 
-We welcome contributions to ETHArena! Here's how you can help:
+We welcome contributions to Agentonic! Here's how you can help:
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
