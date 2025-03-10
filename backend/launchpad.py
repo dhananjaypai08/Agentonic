@@ -39,7 +39,7 @@ def deploy_contract(name: str, symbol: str, initialSupply: int, maxSupply: int):
 
     transaction = {
         'nonce': nonce,
-        'gas': gas_estimate * 1.4,
+        'gas': gas_estimate,
         'gasPrice': w3.eth.gas_price,
         'from': account.address,
     }
@@ -72,7 +72,7 @@ def mint_tokens(contract_address: str, to: str, amount: int):
     gas_estimate = contract.functions.mint(to, amount).estimate_gas({"from": account.address})
     transaction = {
         'nonce': nonce,
-        'gas': gas_estimate * 1.4,
+        'gas': gas_estimate,
         'gasPrice': w3.eth.gas_price,
         'from': account.address,
     }
