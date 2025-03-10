@@ -18,7 +18,7 @@ A client built on `ZerePy` that lets you create and command adaptive AI agents w
 
 
 ## Description 
-Agentonic is a client-side application built on ZerePy and deployed on Sonic testnet, empowering users to create, configure, and interact with AI agents through simple natural language prompts. Users can bridge assets, manage wallets, assess DeFi risks, and identify high-yield opportunities. Agentonic's native social agent even launches tokens autonomously by monitoring market sentiment through X/Twitter analysis — executing mints and deployments when sentiment scores cross a configurable threshold, ensuring decisions align with optimal market conditions.
+Agentonic is a client-side application built on ZerePy and powered by Sonic, empowering users to create, configure, and interact with AI agents through simple natural language prompts. Users can bridge assets, manage wallets, assess DeFi risks, and identify high-yield opportunities. Agentonic's native social agent even launches tokens autonomously by monitoring market sentiment through X/Twitter analysis — executing mints and deployments when sentiment scores cross a configurable threshold, ensuring decisions align with optimal market conditions.
 
 ## 🎯 Problem Statement
 
