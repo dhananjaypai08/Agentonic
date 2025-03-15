@@ -145,7 +145,7 @@ python3 main.py
 cd ZerePy
 
 # Install dependencies
-poetry run pip install -r requirements.txt
+poetry run pip install -r requirements.txt  # or poetry install --no-root && poetry install --extras server
 
 # Set up environment variables
 cp .env.example .env
