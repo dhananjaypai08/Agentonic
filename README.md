@@ -110,6 +110,15 @@ npm install
 npm run tauri dev
 ```
 
+### Contracts setup
+Note: This creates an `artifact` folder for automated token launches
+```bash
+cd agentonic-contracts
+npm install
+npx hardhat compile
+```
+
+
 ### Backend Setup
 ```bash
 # Navigate to backend directory
